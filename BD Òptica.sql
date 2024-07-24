@@ -12,7 +12,7 @@ CREATE TABLE `clients` (
 `ciutat` varchar(50) NOT NULL,
 `codi_postal` int(5) NOT NULL,
 `pais` varchar(50) NOT NULL,
-`telèfon` varchar(20) NOT NULL,
+`telefon` varchar(20) NOT NULL,
 `correu_electronic` varchar(50) NOT NULL,
 `recomanat_per` int(11),
 PRIMARY KEY (`id_client`)
@@ -37,7 +37,7 @@ CREATE TABLE `proveidors` (
 `ciutat` varchar(50) NOT NULL,
 `codi_postal` int(5) NOT NULL,
 `pais` varchar(50) NOT NULL,
-`telèfon` varchar(20) NOT NULL,
+`telefon` varchar(20) NOT NULL,
 `fax` varchar(50) NOT NULL,
 `NIF` varchar(9) NOT NULL,
 PRIMARY KEY (`id_proveidor`)
