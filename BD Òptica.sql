@@ -71,7 +71,7 @@ CREATE TABLE `ulleres` (
 `color_muntura` varchar(50) NOT NULL,
 `color_vidre_dret` varchar(50) NOT NULL,
 `color_vidre_esq` varchar(50) NOT NULL,
-`preu_euros` decimal(5,3) NOT NULL,
+`preu_euros` decimal(5,2) NOT NULL,
 `venedor` varchar(50) NOT NULL,
 `data_venda` datetime NOT NULL,
 PRIMARY KEY (`id_ulleres`),
