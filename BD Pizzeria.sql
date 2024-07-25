@@ -79,7 +79,9 @@ INSERT INTO `productes` VALUES (3,'Begudes','./img/img_pizza.jpeg',3.00);
 CREATE TABLE `comandes` (
 `id_comanda` int(11) NOT NULL AUTO_INCREMENT,
 `id_client` int(11) NOT NULL,
-`id_repartidor` int(11) NOT NULL,
+`tipus_entrega` varchar(50) NOT NULL,
+`id_botiga` int(11) NOT NULL,
+`id_repartidor` int(11),
 `id_pizzes` int(11) NOT NULL,
 `quantitat_pizzes_total` int(5) NOT NULL,
 `id_pizzes_1` int(11) NOT NULL,
@@ -102,9 +104,10 @@ CREATE TABLE `comandes` (
 `quantitat_begudes` int(5) NOT NULL,
 `preu_total` decimal(8,2) NOT NULL,
 `data_comanda` datetime NOT NULL,
-`data_entrega` datetime NOT NULL,
+`data_entrega` datetime,
 PRIMARY KEY (`id_comanda`),
 CONSTRAINT `fk_comandes_clients` FOREIGN KEY (`id_client`) REFERENCES `clients` (`id_client`) ON UPDATE CASCADE,
+CONSTRAINT `fk_comandes_botigues` FOREIGN KEY (`id_botiga`) REFERENCES `botigues` (`id_botiga`) ON UPDATE CASCADE,
 CONSTRAINT `fk_comandes_empleats` FOREIGN KEY (`id_repartidor`) REFERENCES `empleats` (`id_empleat`) ON UPDATE CASCADE,
 CONSTRAINT `fk_comandes_productes_1` FOREIGN KEY (`id_pizzes`) REFERENCES `productes` (`id_producte`) ON UPDATE CASCADE,
 CONSTRAINT `fk_comandes_productes_2` FOREIGN KEY (`id_hamburgueses`) REFERENCES `productes` (`id_producte`) ON UPDATE CASCADE,
@@ -117,13 +120,18 @@ CONSTRAINT `fk_comandes_categories_5` FOREIGN KEY (`id_pizzes_5`) REFERENCES `ca
 CONSTRAINT `fk_comandes_categories_6` FOREIGN KEY (`id_pizzes_6`) REFERENCES `categories` (`id_categoria`) ON UPDATE CASCADE,
 CONSTRAINT `fk_comandes_categories_7` FOREIGN KEY (`id_pizzes_7`) REFERENCES `categories` (`id_categoria`) ON UPDATE CASCADE
 );
-INSERT INTO `comandes` VALUES (1,1,2,1,2,1,0,2,0,3,1,4,1,5,0,6,0,7,0,2,1,3,2,35.00,'2024-02-11 13:11:55','2024-02-11 13:29:23');
-INSERT INTO `comandes` VALUES (2,4,2,1,1,1,1,2,0,3,0,4,0,5,0,6,0,7,0,2,1,3,1,21.50,'2024-05-03 20:34:12','2024-05-03 20:59:55');
-INSERT INTO `comandes` VALUES (3,2,4,1,4,1,0,2,1,3,0,4,0,5,1,6,1,7,1,2,5,3,8,106.00,'2024-01-27 17:04:54','2024-01-27 17:25:02');
-INSERT INTO `comandes` VALUES (4,3,6,1,2,1,0,2,0,3,0,4,2,5,0,6,0,7,0,2,2,3,4,49.00,'2024-03-15 12:49:44','2024-03-15 13:03:25');
-INSERT INTO `comandes` VALUES (5,5,8,1,1,1,0,2,0,3,0,4,0,5,0,6,0,7,1,2,1,3,1,21.50,'2024-05-04 09:02:11','2024-05-04 09:18:38');
-INSERT INTO `comandes` VALUES (6,1,2,1,1,1,0,2,1,3,0,4,0,5,0,6,0,7,0,2,1,3,2,24.50,'2024-04-24 21:04:12','2024-04-24 21:21:21');
-INSERT INTO `comandes` VALUES (7,4,2,1,1,1,0,2,0,3,0,4,0,5,0,6,1,7,0,2,1,3,1,21.50,'2024-06-20 12:40:35','2024-06-20 12:56:30');
-INSERT INTO `comandes` VALUES (8,2,4,1,7,1,2,2,0,3,1,4,0,5,1,6,0,7,3,2,10,3,24,225.50,'2024-03-23 14:12:09','2024-03-23 14:28:37');
-INSERT INTO `comandes` VALUES (9,3,6,1,2,1,0,2,0,3,0,4,1,5,1,6,0,7,0,2,3,3,5,60.00,'2024-04-19 13:18:45','2024-04-19 13:31:45');
-INSERT INTO `comandes` VALUES (10,5,8,1,1,1,0,2,0,3,0,4,1,5,0,6,0,7,0,2,1,3,2,24.50,'2024-06-21 20:44:13','2024-06-21 21:01:29');
+INSERT INTO `comandes` VALUES (1,1,'A domicili',1,2,1,2,1,0,2,0,3,1,4,1,5,0,6,0,7,0,2,1,3,2,35.00,'2024-02-11 13:11:55','2024-02-11 13:29:23');
+INSERT INTO `comandes` VALUES (2,4,'A domicili',1,2,1,1,1,1,2,0,3,0,4,0,5,0,6,0,7,0,2,1,3,1,21.50,'2024-05-03 20:34:12','2024-05-03 20:59:55');
+INSERT INTO `comandes` VALUES (3,2,'A domicili',2,4,1,4,1,0,2,1,3,0,4,0,5,1,6,1,7,1,2,5,3,8,106.00,'2024-01-27 17:04:54','2024-01-27 17:25:02');
+INSERT INTO `comandes` VALUES (4,3,'A domicili',3,6,1,2,1,0,2,0,3,0,4,2,5,0,6,0,7,0,2,2,3,4,49.00,'2024-03-15 12:49:44','2024-03-15 13:03:25');
+INSERT INTO `comandes` VALUES (5,5,'A domicili',4,8,1,1,1,0,2,0,3,0,4,0,5,0,6,0,7,1,2,1,3,1,21.50,'2024-05-04 09:02:11','2024-05-04 09:18:38');
+INSERT INTO `comandes` VALUES (6,1,'A domicili',1,2,1,1,1,0,2,1,3,0,4,0,5,0,6,0,7,0,2,1,3,2,24.50,'2024-04-24 21:04:12','2024-04-24 21:21:21');
+INSERT INTO `comandes` VALUES (7,4,'A domicili',1,2,1,1,1,0,2,0,3,0,4,0,5,0,6,1,7,0,2,1,3,1,21.50,'2024-06-20 12:40:35','2024-06-20 12:56:30');
+INSERT INTO `comandes` VALUES (8,2,'A domicili',2,4,1,7,1,2,2,0,3,1,4,0,5,1,6,0,7,3,2,10,3,24,225.50,'2024-03-23 14:12:09','2024-03-23 14:28:37');
+INSERT INTO `comandes` VALUES (9,3,'A domicili',3,6,1,2,1,0,2,0,3,0,4,1,5,1,6,0,7,0,2,3,3,5,60.00,'2024-04-19 13:18:45','2024-04-19 13:31:45');
+INSERT INTO `comandes` VALUES (10,5,'A domicili',4,8,1,1,1,0,2,0,3,0,4,1,5,0,6,0,7,0,2,1,3,2,24.50,'2024-06-21 20:44:13','2024-06-21 21:01:29');
+INSERT INTO `comandes` VALUES (11,1,'En botiga',1,NULL,1,1,1,0,2,0,3,1,4,0,5,0,6,0,7,0,2,1,3,1,21.50,'2024-07-14 16:40:32',NULL);
+INSERT INTO `comandes` VALUES (12,4,'En botiga',1,NULL,1,1,1,0,2,0,3,0,4,0,5,0,6,1,7,0,2,0,3,1,13.50,'2024-06-23 09:33:54',NULL);
+INSERT INTO `comandes` VALUES (13,2,'En botiga',2,NULL,1,5,1,0,2,0,3,0,4,3,5,0,6,1,7,1,2,5,3,6,110.50,'2024-05-02 19:55:04',NULL);
+INSERT INTO `comandes` VALUES (14,3,'En botiga',3,NULL,1,2,1,0,2,1,3,0,4,0,5,0,6,0,7,1,2,2,3,2,43.00,'2024-07-10 21:53:05',NULL);
+INSERT INTO `comandes` VALUES (15,5,'En botiga',4,NULL,1,1,1,1,2,1,3,0,4,0,5,0,6,0,7,0,2,1,3,1,21.50,'2024-06-24 18:04:09',NULL);
