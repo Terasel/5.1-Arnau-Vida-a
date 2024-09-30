@@ -14,7 +14,7 @@ CREATE TABLE `clients` (
 `pais` varchar(50) NOT NULL,
 `telefon` varchar(20) NOT NULL,
 `correu_electronic` varchar(50) NOT NULL,
-`recomanat_per` int(11),
+`recomanat_per` int(11) REFERENCES `clients` (`id_client`),
 PRIMARY KEY (`id_client`)
 );
 INSERT INTO `clients` VALUES (1,'Frodo Baggins','Bag Row',10,0,1,'Hobbiton',01230,'The Shire','+64 635 777 910','jahofarejo@gmail.com',NULL);
@@ -64,27 +64,54 @@ INSERT INTO `marques` VALUES (6,'Zirakzigilers',2);
 CREATE TABLE `ulleres` (
 `id_ulleres` int(11) NOT NULL AUTO_INCREMENT,
 `id_marca` int(11) NOT NULL,
-`id_client` int(11) NOT NULL,
 `graduacio_vidre_dret` decimal(5,3) NOT NULL,
 `graduacio_vidre_esq` decimal(5,3) NOT NULL,
 `muntura` varchar(50) NOT NULL,
 `color_muntura` varchar(50) NOT NULL,
 `color_vidre_dret` varchar(50) NOT NULL,
 `color_vidre_esq` varchar(50) NOT NULL,
-`preu_euros` decimal(5,2) NOT NULL,
-`venedor` varchar(50) NOT NULL,
-`data_venda` datetime NOT NULL,
 PRIMARY KEY (`id_ulleres`),
-CONSTRAINT `fk_ulleres_marques` FOREIGN KEY (`id_marca`) REFERENCES `marques` (`id_marca`) ON UPDATE CASCADE,
-CONSTRAINT `fk_ulleres_clients` FOREIGN KEY (`id_client`) REFERENCES `clients` (`id_client`) ON UPDATE CASCADE
+CONSTRAINT `fk_ulleres_marques` FOREIGN KEY (`id_marca`) REFERENCES `marques` (`id_marca`) ON UPDATE CASCADE
 );
-INSERT INTO `ulleres` VALUES (1,2,1,2.5,2.0,'flotant','verd_fosc','incolor','incolor',40.50,'Elrond Halfelven','2023-04-16 10:50:32');
-INSERT INTO `ulleres` VALUES (2,1,2,0.5,0.75,'pasta','marro_clar','incolor','incolor',35.00,'Elrond Halfelven','2023-04-17 09:11:30');
-INSERT INTO `ulleres` VALUES (3,3,3,4.0,4.0,'metal·lica','vermell_clar','incolor','incolor',50.00,'Elladan Halfelven','2023-11-9 19:22:53');
-INSERT INTO `ulleres` VALUES (4,4,4,3.25,3.75,'flotant','plata','negre','negre',55.00,'Arwen Halfelven','2024-05-02 12:33:22');
-INSERT INTO `ulleres` VALUES (5,5,5,1.0,1.25,'pasta','gris','incolor','incolor',37.50,'Elrond Halfelven','2024-01-07 13:31:01');
-INSERT INTO `ulleres` VALUES (6,6,6,2.5,2.5,'flotant','blau_mari','incolor','incolor',41.00,'Arwen Halfelven','2023-03-17 20:28:15');
-INSERT INTO `ulleres` VALUES (7,3,7,3.75,3.5,'metal·lica','blanc','negre','negre',65.00,'Elladan Halfelven','2024-07-19 11:55:33');
-INSERT INTO `ulleres` VALUES (8,4,8,0.5,0.5,'pasta','verd_clar','incolor','incolor',34.50,'Elladan Halfelven','2024-02-27 09:01:45');
-INSERT INTO `ulleres` VALUES (9,6,9,3.0,2.5,'metal·lica','gris','incolor','incolor',52.50,'Arwen Halfelven','2023-12-17 12:28:08');
-INSERT INTO `ulleres` VALUES (10,3,5,1.0,1.25,'pasta','blanc','incolor','incolor',37.50,'Elrond Halfelven','2024-04-17 17:06:55');
+INSERT INTO `ulleres` VALUES (1,2,2.5,2.0,'flotant','verd_fosc','incolor','incolor');
+INSERT INTO `ulleres` VALUES (2,1,0.5,0.75,'pasta','marro_clar','incolor','incolor');
+INSERT INTO `ulleres` VALUES (3,3,4.0,4.0,'metal·lica','vermell_clar','incolor','incolor');
+INSERT INTO `ulleres` VALUES (4,4,3.25,3.75,'flotant','plata','negre','negre');
+INSERT INTO `ulleres` VALUES (5,5,1.0,1.25,'pasta','gris','incolor','incolor');
+INSERT INTO `ulleres` VALUES (6,6,2.5,2.5,'flotant','blau_mari','incolor','incolor');
+INSERT INTO `ulleres` VALUES (7,3,3.75,3.5,'metal·lica','blanc','negre','negre');
+INSERT INTO `ulleres` VALUES (8,4,0.5,0.5,'pasta','verd_clar','incolor','incolor');
+INSERT INTO `ulleres` VALUES (9,6,3.0,2.5,'metal·lica','gris','incolor','incolor');
+INSERT INTO `ulleres` VALUES (10,3,1.0,1.25,'pasta','blanc','incolor','incolor');
+
+CREATE TABLE `empleats` (
+`id_empleat` int(11) NOT NULL AUTO_INCREMENT,
+`nom` varchar(50) NOT NULL,
+PRIMARY KEY (`id_empleat`)
+);
+INSERT INTO `empleats` VALUES (1,'Elrond Halfelven');
+INSERT INTO `empleats` VALUES (2,'Elladan Halfelven');
+INSERT INTO `empleats` VALUES (3,'Arwen Halfelven');
+
+CREATE TABLE `vendes` (
+`id_venda` int(11) NOT NULL AUTO_INCREMENT,
+`id_ulleres` int(11) NOT NULL,
+`id_client` int(11) NOT NULL,
+`preu_euros` decimal(5,2) NOT NULL,
+`venedor` int(11) NOT NULL,
+`data_venda` datetime NOT NULL,
+PRIMARY KEY (`id_venda`),
+CONSTRAINT `fk_vendes_clients` FOREIGN KEY (`id_client`) REFERENCES `clients` (`id_client`) ON UPDATE CASCADE,
+CONSTRAINT `fk_vendes_ulleres` FOREIGN KEY (`id_ulleres`) REFERENCES `ulleres` (`id_ulleres`) ON UPDATE CASCADE,
+CONSTRAINT `fk_vendes_empleats` FOREIGN KEY (`venedor`) REFERENCES `empleats` (`id_empleat`) ON UPDATE CASCADE
+);
+INSERT INTO `vendes` VALUES (1,1,1,40.50,1,'2023-04-16 10:50:32');
+INSERT INTO `vendes` VALUES (2,2,2,35.00,1,'2023-04-17 09:11:30');
+INSERT INTO `vendes` VALUES (3,3,3,50.00,2,'2023-11-9 19:22:53');
+INSERT INTO `vendes` VALUES (4,4,4,55.00,3,'2024-05-02 12:33:22');
+INSERT INTO `vendes` VALUES (5,5,5,37.50,1,'2024-01-07 13:31:01');
+INSERT INTO `vendes` VALUES (6,6,6,41.00,3,'2023-03-17 20:28:15');
+INSERT INTO `vendes` VALUES (7,7,7,65.00,2,'2024-07-19 11:55:33');
+INSERT INTO `vendes` VALUES (8,8,8,34.50,2,'2024-02-27 09:01:45');
+INSERT INTO `vendes` VALUES (9,9,9,52.50,3,'2023-12-17 12:28:08');
+INSERT INTO `vendes` VALUES (10,10,5,37.50,1,'2024-04-17 17:06:55');
